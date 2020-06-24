@@ -12,12 +12,12 @@ import re # we can do regular expression features with this
 import time # for time stamps
 import pandas as pd # will be used for the table querying.
 import argparse #user friendly argument creation
-
+import psutil as ps #let's use this to know the amount of available cores are
 ### functions
 
 logger = lambda message: "[{}] {}".format(time.strftime('%m/%d/%Y %H:%M:%S'),message)
 
-def pirate_run(list_of_samples,output_name):
+def roary_run(list_of_samples,output_name):
     gff_list = list(map(lambda element: element + ".gff",list_of_samples))
     with open('temp.txt','w') as temp:
         temp.write('\n'.join(gff_list))
@@ -25,9 +25,11 @@ def pirate_run(list_of_samples,output_name):
     output_dir = "{}_pangenome_directory".format(output_name)
     os.system("mkdir {}".format(output_dir))
     os.system("ls | grep -f temp.txt | xargs cp -t {}".format(output_dir))
-    os.system("PIRATE -i {} -o {}".format(output_dir,output_dir))
+    os.chdir(output_dir)
+    os.system("roary -v -p {} *.gff".format(args.threads))
+    os.chdir("../")
     os.system("rm temp.txt")
-        
+
 
 ### arguments
 
@@ -36,6 +38,7 @@ parser.add_argument('-m','--metadata',dest='meta',help='Provide the path to the 
 parser.add_argument('-o','--output',dest='out',help='The name used for the output directories/database/results.')
 parser.add_argument('-v','--value',dest='value',action='append',nargs='+',help='filter the data to create a pangenome by the specified metadata. use this parameter with -x to specify the metadata column.')
 parser.add_argument('-c','--column',dest='column',action='append',nargs='+',help='the corresponding list of filters need to have a corresponding column')
+parser.add_argument('-t','--threads',dest='threads',default=ps.cpu_count()/2,help='number of threads to create pangenomes')
 
 args = parser.parse_args()
 
@@ -95,10 +98,13 @@ for i,j in iter_pairs:
     else:
         query = query + " & {} == {}".format(i[0],"\'{}\'".format(j[0]))
     count = count + 1
-
-filtered_pd = metadata_file.query(query)
+try:
+    filtered_pd = metadata_file.query(query)
+    print(logger("filtering the metadata now"))
+except:
+    print(logger("ERROR - something is wrong with the filtering of the metadata"))
+    sys.exit(0)
+print(logger("here are the columns that satisfy your search:\n"))
 print(filtered_pd)
 sample_list = filtered_pd['Sample'].tolist()
-pirate_run(sample_list,args.out)
-
-### TEST THIS ON THE CLUSTER
+roary_run(sample_list,args.out)
