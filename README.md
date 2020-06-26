@@ -32,10 +32,15 @@ Sample | M1 |	M2 |	M3
 00-32MIDNRdeerOts_S19_L001.	| B	| C	| Z
 00-33MIDNRdeerPI_S7_L001.	| B	| C	| Y
 
+
 With that we are off to the races. On your command line, you will want to type something to this effect:
 ```
 python /path/to/pansplit.py -m /path/to/sample_meta.csv -o name_of_output_directory -v A -c M1 -v D -c M2 -t <number of threads>
 ```
+### Feature Wishlist
+* More complex filtering options
+* Figure out how to properly edit GFF files to exclude/include certain features
+
 ### Thank you!
 I hope people get good use out of this mini tool I made. Please leave issues to suggest how I can make this tool even better!
 
