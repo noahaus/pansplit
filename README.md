@@ -4,7 +4,7 @@ a command line tool for pangenome creation based on metadata
 
 As more bacterial sequence data is available for analysis, there will undoubtebly be a need to construct pangenomes in ways that match certain metadata that is associated with that data.
 
-I've encountered this problem in my research and thought it would be nice to have a tool that can arbitrate the construction of pangenomes based on metadata. pansplit is my way of addressing this problem (grateful for COVID-19 to give me more free time to embark on this type of thing).
+I've encountered this problem in my research and thought it would be nice to have a tool that can arbitrate the construction of pangenomes based on metadata. pansplit is my way of addressing this problem (grateful for lockdown to give me more free time to embark on this type of thing).
 
 
 ### Installation
