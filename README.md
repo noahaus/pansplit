@@ -1,3 +1,4 @@
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 # pansplit
 a command line tool for pangenome creation based on metadata 
 
